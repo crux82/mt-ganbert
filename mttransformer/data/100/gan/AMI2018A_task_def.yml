@@ -1,0 +1,9 @@
+AMI2018A:
+  data_format: Gan
+  enable_san: false
+  metric_meta:
+  - F1MAC
+  - ACC
+  loss: CeCriterion
+  n_class: 2
+  task_type: Classification
