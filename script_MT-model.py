@@ -1,10 +1,25 @@
+import os
+import pandas as pd
+import csv
+from sklearn.model_selection import train_test_split
+import numpy as np
+import random
+import tensorflow as tf
+import torch
+
+os.chdir("/Users/claudia/Documents/mt-ganbert/mttransformer/tsv_files")
+path = "/Users/claudia/Documents/mt-ganbert/mttransformer/tsv_files/tsv_transformed"
+
+try:
+    os.mkdir(path)
+except OSError:
+    print ("Creation of the directory %s failed" % path)
+else:
+    print ("Successfully created the directory %s " % path)
+
 apply_gan=False
 number_labeled_examples=0 #0-100-200-500
 balancing=True
-
-%cd tsv_files/
-
-file_loaded=True
 
 #path train and test dataset of the task
 tsv_haspeede_train = 'haspeede_TW-train.tsv'
@@ -46,7 +61,6 @@ for ind in df_train3.index:
       df = df.append({'id' : df_train3['id'][ind], 'misogyny_category' : 2, 'text' : df_train3['text'][ind] }, ignore_index=True)
 
 df_train3 = df
-
 df_test3 = pd.read_csv(tsv_AMI2018_test, delimiter='\t')
 df = pd.DataFrame(columns=['id', 'misogyny_category', 'text'])
 for ind in df_test3.index:
@@ -79,7 +93,6 @@ for ind in df_train5.index:
     df_train5 = df_train5.replace(to_replace='\t', value='', regex=True)
 
 df_train6 = pd.read_csv(tsv_SENTIPOLC2016_train, delimiter=',')
-
 df = pd.DataFrame(columns=['idtwitter', 'polarity', 'text'])
 for ind in df_train6.index:
   if df_train6['subj'][ind] == 1:
@@ -94,13 +107,11 @@ for ind in df_train6.index:
       df = df.append({'idtwitter' : df_train6['idtwitter'][ind], 'polarity' : 2, 'text' : df_train6['text'][ind] }, ignore_index=True)
 
 df_train6 = df
-
 for ind in df_train6.index:
   if "\t" in df_train6.text[ind]:
     df_train6 = df_train6.replace(to_replace='\t', value='', regex=True)
 
 df_test6 = pd.read_csv(tsv_SENTIPOLC2016_test, delimiter=',')
-
 df = pd.DataFrame(columns=['idtwitter', 'polarity', 'text'])
 for ind in df_test6.index:
   if df_test6['subj'][ind] == 1:
@@ -115,7 +126,6 @@ for ind in df_test6.index:
       df = df.append({'idtwitter' : df_test6['idtwitter'][ind], 'polarity' : 2, 'text' : df_test6['text'][ind] }, ignore_index=True)
 
 df_test6 = df
-
 
 #split train dev
 train_dataset, dev_dataset = train_test_split(df_train, test_size=0.2, shuffle = True)
@@ -144,17 +154,14 @@ if number_labeled_examples!=0:
     unlabeled2.drop(unlabeled2[cond2].index, inplace = True)
     unlabeled3.drop(unlabeled3[cond3].index, inplace = True)
     unlabeled4.drop(unlabeled4[cond4].index, inplace = True)
-
     labeled5 = train_dataset5.sample(n=100)
     unlabeled5 = train_dataset5
     cond = unlabeled5['idtwitter'].isin(labeled5['idtwitter'])
     unlabeled5.drop(unlabeled5[cond].index, inplace = True)
-
     labeled6 = train_dataset6.sample(n=100)
     unlabeled6 = train_dataset6
     cond = unlabeled6['idtwitter'].isin(labeled6['idtwitter'])
     unlabeled6.drop(unlabeled6[cond].index, inplace = True)
-
   elif number_labeled_examples==200:
     labeled = train_dataset.sample(n=200)
     unlabeled = train_dataset
@@ -172,17 +179,14 @@ if number_labeled_examples!=0:
     unlabeled2.drop(unlabeled2[cond2].index, inplace = True)
     unlabeled3.drop(unlabeled3[cond3].index, inplace = True)
     unlabeled4.drop(unlabeled4[cond4].index, inplace = True)
-
     labeled5 = train_dataset5.sample(n=200)
     unlabeled5 = train_dataset5
     cond = unlabeled5['idtwitter'].isin(labeled5['idtwitter'])
     unlabeled5.drop(unlabeled5[cond].index, inplace = True)
-
     labeled6 = train_dataset6.sample(n=200)
     unlabeled6 = train_dataset6
     cond = unlabeled6['idtwitter'].isin(labeled6['idtwitter'])
     unlabeled6.drop(unlabeled6[cond].index, inplace = True)
-
   elif number_labeled_examples==500:
     labeled = train_dataset.sample(n=500)
     unlabeled = train_dataset
@@ -200,20 +204,17 @@ if number_labeled_examples!=0:
     unlabeled2.drop(unlabeled2[cond2].index, inplace = True)
     unlabeled3.drop(unlabeled3[cond3].index, inplace = True)
     unlabeled4.drop(unlabeled4[cond4].index, inplace = True)
-
     labeled5 = train_dataset5.sample(n=500)
     unlabeled5 = train_dataset5
     cond = unlabeled5['idtwitter'].isin(labeled5['idtwitter'])
     unlabeled5.drop(unlabeled5[cond].index, inplace = True)
-
     labeled6 = train_dataset6.sample(n=500)
     unlabeled6 = train_dataset6
     cond = unlabeled6['idtwitter'].isin(labeled6['idtwitter'])
     unlabeled6.drop(unlabeled6[cond].index, inplace = True)
-
   #model with or without gan
   if apply_gan == True:
-    print("GANBERT")
+    print("MT-GANBERT")
     #dataset unlabeled with label -1
     unlabeled['label'] = unlabeled['label'].replace(0,-1)
     unlabeled['label'] = unlabeled['label'].replace(1,-1)
@@ -242,14 +243,12 @@ if number_labeled_examples!=0:
     print("Size of Dev dataset is {} ".format(len(dev2)))
     print("Size of Dev dataset is {} ".format(len(dev3)))
     print("Size of Dev dataset is {} ".format(len(dev4)))
-
     unlabeled5['subj'] = unlabeled5['subj'].replace(0,-1)
     unlabeled5['subj'] = unlabeled5['subj'].replace(1,-1)
     train5 = pd.concat([labeled5, unlabeled5])
     dev5 = dev_dataset5
     print("Size of Train dataset is {}, with {} labeled and {} not labeled ".format(len(train5),len(labeled5), len(unlabeled5)))
     print("Size of Dev dataset is {} ".format(len(dev5)))
-
     unlabeled6['polarity'] = unlabeled6['polarity'].replace(0,-1)
     unlabeled6['polarity'] = unlabeled6['polarity'].replace(1,-1)
     unlabeled6['polarity'] = unlabeled6['polarity'].replace(2,-1)
@@ -258,7 +257,7 @@ if number_labeled_examples!=0:
     print("Size of Train dataset is {}, with {} labeled and {} not labeled ".format(len(train6),len(labeled6), len(unlabeled6)))
     print("Size of Dev dataset is {} ".format(len(dev6)))
   else:
-    print("BERT-based model, with reduction dataset")
+    print("MT-DNN, with reduction dataset")
     train = labeled
     train2 = labeled2
     train3 = labeled3
@@ -275,19 +274,16 @@ if number_labeled_examples!=0:
     print("Size of Dev dataset is {} ".format(len(dev2)))
     print("Size of Dev dataset is {} ".format(len(dev3)))
     print("Size of Dev dataset is {} ".format(len(dev4)))
-
     train5 = labeled5
     dev5 = dev_dataset5
     print("Size of Train dataset is {} ".format(len(labeled5)))
     print("Size of Dev dataset is {} ".format(len(dev5)))
-
     train6 = labeled6
     dev6 = dev_dataset6
     print("Size of Train dataset is {} ".format(len(labeled6)))
     print("Size of Dev dataset is {} ".format(len(dev6)))
-
 else:
-  print("BERT-based model")
+  print("MT-DNN")
   train = train_dataset
   train2 = train_dataset2
   train3 = train_dataset3
@@ -304,12 +300,10 @@ else:
   print("Size of Dev dataset is {} ".format(len(dev2)))
   print("Size of Dev dataset is {} ".format(len(dev3)))
   print("Size of Dev dataset is {} ".format(len(dev4)))
-
   train5 = train_dataset5
   dev5=dev_dataset5
   print("Size of Train dataset is {} ".format(len(train5)))
   print("Size of Dev dataset is {} ".format(len(dev5)))
-
   train6 = train_dataset6
   dev6=dev_dataset6
   print("Size of Train dataset is {} ".format(len(train6)))
@@ -335,13 +329,9 @@ if balancing==True:
       unlabeled6=train6
       max_train_un = max(len(unlabeled), len(unlabeled2), len(unlabeled3), len(unlabeled4), len(unlabeled5), len(unlabeled6))
       print(max_train_un)
-
-
-      #double dataset
-
+    #double dataset
     df = pd.DataFrame(columns=['id', 'label', 'sentence'])
     count=0
-
     if len(unlabeled)<max_train_un:
       for i in range(max_train_un):
         if i < len(unlabeled):
@@ -354,19 +344,13 @@ if balancing==True:
             count = 0
             df = df.append({'id' : unlabeled.iloc[count, 0], 'label' : unlabeled.iloc[count, 1], 'sentence' : unlabeled.iloc[count, 2] }, ignore_index=True)
             count = count+1
-
       unlabeled = df
-
     if apply_gan== True:
       train = pd.concat([labeled, unlabeled])
     else:
       train=unlabeled
-
-
-
     df = pd.DataFrame(columns=['id', 'misogynous', 'text'])
     count=0
-
     if len(unlabeled2)<max_train_un:
       for i in range(max_train_un):
         if i < len(unlabeled2):
@@ -379,18 +363,13 @@ if balancing==True:
             count = 0
             df = df.append({'id' : unlabeled2.iloc[count, 0], 'misogynous' : unlabeled2.iloc[count, 1], 'text' : unlabeled2.iloc[count, 2] }, ignore_index=True)
             count = count+1
-
       unlabeled2 = df
-
     if apply_gan==True:
       train2 = pd.concat([labeled2, unlabeled2])
     else:
       train2=unlabeled2
-
-
     df = pd.DataFrame(columns=['id', 'misogyny_category', 'text'])
     count=0
-
     if len(unlabeled3)<max_train_un:
       for i in range(max_train_un):
         if i < len(unlabeled3):
@@ -403,18 +382,13 @@ if balancing==True:
             count = 0
             df = df.append({'id' : unlabeled3.iloc[count, 0], 'misogyny_category' : unlabeled3.iloc[count, 1], 'text' : unlabeled3.iloc[count, 2] }, ignore_index=True)
             count = count+1
-
       unlabeled3 = df
-
     if apply_gan==True:
       train3 = pd.concat([labeled3, unlabeled3])
     else:
       train3=unlabeled3
-
-
     df = pd.DataFrame(columns=['File', 'Hate Speech', 'Text'])
     count=0
-
     if len(unlabeled4)<max_train_un:
       for i in range(max_train_un):
         if i < len(unlabeled4):
@@ -427,18 +401,13 @@ if balancing==True:
             count = 0
             df = df.append({'File' : unlabeled4.iloc[count, 0], 'Hate Speech' : unlabeled4.iloc[count, 1], 'Text' : unlabeled4.iloc[count, 2] }, ignore_index=True)
             count = count+1
-
       unlabeled4 = df
-
     if apply_gan==True:
       train4 = pd.concat([labeled4, unlabeled4])
     else:
       train4=unlabeled4
-
-
     df = pd.DataFrame(columns=['idtwitter', 'subj', 'text'])
     count=0
-
     if len(unlabeled5)<max_train_un:
       for i in range(max_train_un):
         if i < len(unlabeled5):
@@ -451,18 +420,13 @@ if balancing==True:
             count = 0
             df = df.append({'idtwitter' : unlabeled5.iloc[count, 0], 'subj' : unlabeled5.iloc[count, 1], 'text' : unlabeled5.iloc[count, 2] }, ignore_index=True)
             count = count+1
-
       unlabeled5 = df
-
     if apply_gan==True:
       train5 = pd.concat([labeled5, unlabeled5])
     else:
       train5=unlabeled5
-
-
     df = pd.DataFrame(columns=['idtwitter', 'polarity', 'text'])
     count=0
-
     if len(unlabeled6)<max_train_un:
       for i in range(max_train_un):
         if i < len(unlabeled6):
@@ -475,18 +439,13 @@ if balancing==True:
             count = 0
             df = df.append({'idtwitter' : unlabeled6.iloc[count, 0], 'polarity' : unlabeled6.iloc[count, 1], 'text' : unlabeled6.iloc[count, 2] }, ignore_index=True)
             count = count+1
-
       unlabeled6 = df
-
     if apply_gan==True:
       train6 = pd.concat([labeled6, unlabeled6])
     else:
       train6=unlabeled6
 
-
-
-!mkdir tsv_transformed
-%cd tsv_transformed/
+os.chdir(path)
 
 #The code is using surfix to distinguish what type of set it is ("_train","_dev" and "_test"). So:
 #1.   make sure your train set is named as "TASK_train" (replace TASK with your task name)
@@ -554,32 +513,24 @@ name_file = 'haspeede-TW_task_def.yml'
 
 
 f = open(name_train, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_train,label_train,sentence_train))
 
 f = open(name_dev, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_dev,label_dev,sentence_dev))
 
 f = open(name_test, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_test,label_test,sentence_test))
 
 task = "haspeede-TW:\n"
 
 f = open(name_file, 'w')
-
 with f:
-
     f.write(task)
     if apply_gan == True:
       f.write("  data_format: Gan\n")
@@ -615,23 +566,17 @@ sentence_test = df_test2.text
 name_file = 'AMI2018A_task_def.yml'
 
 f = open(name_train, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_train,label_train,sentence_train))
 
 f = open(name_dev, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_dev,label_dev,sentence_dev))
 
 f = open(name_test, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_test,label_test,sentence_test))
 
@@ -641,7 +586,6 @@ task = "AMI2018A:\n"
 f = open(name_file, 'w')
 
 with f:
-
     f.write(task)
     if apply_gan == True:
       f.write("  data_format: Gan\n")
@@ -679,25 +623,19 @@ name_file = 'AMI2018B_task_def.yml'
 
 
 f = open(name_train, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_train,label_train,sentence_train))
 
 
 f = open(name_dev, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_dev,label_dev,sentence_dev))
 
 
 f = open(name_test, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_test,label_test,sentence_test))
 
@@ -707,7 +645,6 @@ task = "AMI2018B:\n"
 f = open(name_file, 'w')
 
 with f:
-
     f.write(task)
     if apply_gan == True:
       f.write("  data_format: Gan\n")
@@ -745,25 +682,19 @@ name_file = 'DANKMEMES2020_task_def.yml'
 
 
 f = open(name_train, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_train,label_train,sentence_train))
 
 
 f = open(name_dev, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_dev,label_dev,sentence_dev))
 
 
 f = open(name_test, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_test,label_test,sentence_test))
 
@@ -771,9 +702,7 @@ with f:
 task = "DANKMEMES2020:\n"
 
 f = open(name_file, 'w')
-
 with f:
-
     f.write(task)
     if apply_gan == True:
       f.write("  data_format: Gan\n")
@@ -811,25 +740,19 @@ name_file = 'SENTIPOLC20161_task_def.yml'
 
 
 f = open(name_train, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_train,label_train,sentence_train))
 
 
 f = open(name_dev, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_dev,label_dev,sentence_dev))
 
 
 f = open(name_test, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_test,label_test,sentence_test))
 
@@ -837,9 +760,7 @@ with f:
 task = "SENTIPOLC20161:\n"
 
 f = open(name_file, 'w')
-
 with f:
-
     f.write(task)
     if apply_gan == True:
       f.write("  data_format: Gan\n")
@@ -877,25 +798,19 @@ name_file = 'SENTIPOLC20162_task_def.yml'
 
 
 f = open(name_train, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_train,label_train,sentence_train))
 
 
 f = open(name_dev, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_dev,label_dev,sentence_dev))
 
 
 f = open(name_test, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_test,label_test,sentence_test))
 
@@ -903,9 +818,7 @@ with f:
 task = "SENTIPOLC20162:\n"
 
 f = open(name_file, 'w')
-
 with f:
-
     f.write(task)
     if apply_gan == True:
       f.write("  data_format: Gan\n")
@@ -918,8 +831,3 @@ with f:
     f.write("  loss: CeCriterion\n")
     f.write("  n_class: 3\n")
     f.write("  task_type: Classification\n")
-
-
-
-%cd ..
-%cd ..

@@ -1,11 +1,25 @@
-#Task HaSpeeDe
+import os
+import pandas as pd
+import csv
+from sklearn.model_selection import train_test_split
+import numpy as np
+import random
+import tensorflow as tf
+import torch
+
+os.chdir("/Users/claudia/Documents/mt-ganbert/mttransformer/tsv_files")
+path = "/Users/claudia/Documents/mt-ganbert/mttransformer/tsv_files/tsv_transformed"
+
+try:
+    os.mkdir(path)
+except OSError:
+    print ("Creation of the directory %s failed" % path)
+else:
+    print ("Successfully created the directory %s " % path)
 
 apply_gan=False
 number_labeled_examples=0 #0-100-200-500
 
-%cd tsv_files/
-
-file_loaded=True
 
 #path train and test dataset of the task
 tsv_task_train = 'haspeede_TW-train.tsv'
@@ -18,16 +32,15 @@ if "haspeede" in tsv_task_train:
     df_train = df_train[['id']+['label']+['sentence']]
     df_test = pd.read_csv(tsv_task_test, delimiter='\t', names=('id','sentence','label'))
     df_test = df_test[['id']+['label']+['sentence']]
-elif "AMI2018" in tsv_task_train and AMI = "A":
+elif "AMI2018" in tsv_task_train and AMI == "A":
     df_train = pd.read_csv(tsv_task_train, delimiter='\t')
     df_train = df_train[['id']+['misogynous']+['text']]
     df_train = df_train.rename(columns={'misogynous': 'label','text': 'sentence'})
     df_test = pd.read_csv(tsv_task_test, delimiter='\t')
     df_test = df_test[['id']+['misogynous']+['text']]
     df_test = df_test.rename(columns={'misogynous': 'label','text': 'sentence'})
-elif "AMI2018" in tsv_task_train and AMI = "B":
+elif "AMI2018" in tsv_task_train and AMI == "B":
     df_train = pd.read_csv(tsv_task_train, delimiter='\t')
-
     df = pd.DataFrame(columns=['id', 'misogyny_category', 'text'])
     for ind in df_train.index:
       if df_train.misogynous[ind]==1:
@@ -41,10 +54,8 @@ elif "AMI2018" in tsv_task_train and AMI = "B":
           df = df.append({'id' : df_train['id'][ind], 'misogyny_category' : 1, 'text' : df_train['text'][ind] }, ignore_index=True)
         elif df_train.misogyny_category[ind] == 'discredit':
           df = df.append({'id' : df_train['id'][ind], 'misogyny_category' : 2, 'text' : df_train['text'][ind] }, ignore_index=True)
-
     df_train = df
     df_train = df_train.rename(columns={'misogyny_category': 'label','text': 'sentence'})
-
     df_test = pd.read_csv(tsv_task_test, delimiter='\t')
     df = pd.DataFrame(columns=['id', 'misogyny_category', 'text'])
     for ind in df_test.index:
@@ -59,7 +70,6 @@ elif "AMI2018" in tsv_task_train and AMI = "B":
           df = df.append({'id' : df_test['id'][ind], 'misogyny_category' : 1, 'text' : df_test['text'][ind] }, ignore_index=True)
         elif df_test.misogyny_category[ind] == 'discredit':
           df = df.append({'id' : df_test['id'][ind], 'misogyny_category' : 2, 'text' : df_test['text'][ind] }, ignore_index=True)
-
     df_test = df
     df_test = df_test.rename(columns={'misogyny_category': 'label', 'text': 'sentence'})
 elif "dankmemes" in tsv_task_train:
@@ -69,20 +79,18 @@ elif "dankmemes" in tsv_task_train:
     df_test = pd.read_csv(tsv_task_test, delimiter=',')
     df_test = df_test[['File']+['Hate Speech']+['Text']]
     df_test = df_test.rename(columns={'File':'id','Hate Speech': 'label', 'Text': 'sentence'})
-elif "sentipolc16" in tsv_task_train and sentipolc = 1:
+elif "sentipolc16" in tsv_task_train and sentipolc == 1:
     df_train = pd.read_csv(tsv_task_train, delimiter=',')
     df_train = df_train[['idtwitter']+['subj']+['text']]
     df_train = df_train.rename(columns={'idtwitter':'id','subj': 'label', 'text': 'sentence'})
     df_test = pd.read_csv(tsv_task_test, delimiter=',')
     df_test = df_test[['idtwitter']+['subj']+['text']]
     df_test = df_test.rename(columns={'idtwitter':'id','subj': 'label', 'text': 'sentence'})
-
     for ind in df_train.index:
       if "\t" in df_train.text[ind]:
         df_train = df_train.replace(to_replace='\t', value='', regex=True)
-elif "sentipolc16" in tsv_task_train and sentipolc = 2:
+elif "sentipolc16" in tsv_task_train and sentipolc == 2:
     df_train = pd.read_csv(tsv_SENTIPOLC2016_train, delimiter=',')
-
     df = pd.DataFrame(columns=['idtwitter', 'polarity', 'text'])
     for ind in df_train.index:
       if df_train['subj'][ind] == 1:
@@ -95,16 +103,12 @@ elif "sentipolc16" in tsv_task_train and sentipolc = 2:
       else:
         if df_train['opos'][ind] == 0 and df_train['oneg'][ind] == 0:
           df = df.append({'idtwitter' : df_train['idtwitter'][ind], 'polarity' : 2, 'text' : df_train['text'][ind] }, ignore_index=True)
-
     df_train = df
     df_train = df_train.rename(columns={'idtwitter':'id','polarity': 'label', 'text': 'sentence'})
-
     for ind in df_train.index:
       if "\t" in df_train.text[ind]:
         df_train = df_train.replace(to_replace='\t', value='', regex=True)
-
     df_test = pd.read_csv(tsv_SENTIPOLC2016_test, delimiter=',')
-
     df = pd.DataFrame(columns=['idtwitter', 'polarity', 'text'])
     for ind in df_test.index:
       if df_test['subj'][ind] == 1:
@@ -117,7 +121,6 @@ elif "sentipolc16" in tsv_task_train and sentipolc = 2:
       else:
         if df_test['opos'][ind] == 0 and df_test['oneg'][ind] == 0:
           df = df.append({'idtwitter' : df_test['idtwitter'][ind], 'polarity' : 2, 'text' : df_test['text'][ind] }, ignore_index=True)
-
     df_test = df
     df_test = df_test.rename(columns={'idtwitter':'id','polarity': 'label', 'text': 'sentence'})
 
@@ -132,19 +135,16 @@ if number_labeled_examples!=0:
     unlabeled = train_dataset
     cond = unlabeled['id'].isin(labeled['id'])
     unlabeled.drop(unlabeled[cond].index, inplace = True)
-
   elif number_labeled_examples==200:
     labeled = train_dataset.sample(n=200)
     unlabeled = train_dataset
     cond = unlabeled['id'].isin(labeled['id'])
     unlabeled.drop(unlabeled[cond].index, inplace = True)
-
   elif number_labeled_examples==500:
     labeled = train_dataset.sample(n=500)
     unlabeled = train_dataset
     cond = unlabeled['id'].isin(labeled['id'])
     unlabeled.drop(unlabeled[cond].index, inplace = True)
-
   #model with or without gan
   if apply_gan == True:
     print("GANBERT")
@@ -161,7 +161,6 @@ if number_labeled_examples!=0:
     dev = dev_dataset
     print("Size of Train dataset is {} ".format(len(labeled)))
     print("Size of Dev dataset is {} ".format(len(dev)))
-
 else:
   print("BERT-based model")
   train = train_dataset
@@ -169,8 +168,7 @@ else:
   print("Size of Train dataset is {} ".format(len(train)))
   print("Size of Dev dataset is {} ".format(len(dev)))
 
-!mkdir tsv_transformed
-%cd tsv_transformed/
+os.chdir(path)
 
 
 #The code is using surfix to distinguish what type of set it is ("_train","_dev" and "_test"). So:
@@ -240,32 +238,24 @@ name_file = 'haspeede-TW_task_def.yml' #the task def file can be composed of all
 
 
 f = open(name_train, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_train,label_train,sentence_train))
 
 f = open(name_dev, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_dev,label_dev,sentence_dev))
 
 f = open(name_test, 'w')
-
 with f:
-
     writer = csv.writer(f, delimiter='\t')
     writer.writerows(zip(id_test,label_test,sentence_test))
 
 task = "haspeede-TW:\n"
 
 f = open(name_file, 'w')
-
 with f:
-
     f.write(task)
     if apply_gan == True:
       f.write("  data_format: Gan\n")
@@ -278,7 +268,3 @@ with f:
     f.write("  loss: CeCriterion\n")
     f.write("  n_class: 2\n") #change the number of classes based on the task
     f.write("  task_type: Classification\n")
-
-
-%cd ..
-%cd ..
