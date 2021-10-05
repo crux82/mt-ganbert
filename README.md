@@ -8,7 +8,7 @@ So in order to use this model you use that code with added parameters that allow
 - 3. MT-GANBERT model.ipynb, in which you can launch the training of MT-GANBERT;
 These notebooks are pretty much the same, only they give you the ability to train each model.
 
-#DATASETS:
+# DATASETS:
 In this work the following 6 tasks are considered:
 1.   Hate Spech Detection. In particular the Twitter dataset of HaSpeeDe is used, the task of Hate Spech Detection organized within Evalita 2018, the 6th evaluation campaign of Natural Language Processing and Speech tools for Italian;
 2.   Automatic Misogyny Identification, in particular the identification of misogyny and non-misogyny tweets, using the dataset of one of the tasks proposed by AMI 2018 (https://amievalita2018.wordpress.com), the task on Automatic Misogyny Identification organized in Evalita 2018;
