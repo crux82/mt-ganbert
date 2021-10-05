@@ -10,12 +10,12 @@ These notebooks are pretty much the same, only they give you the ability to trai
 
 # DATASETS:
 In this work the following 6 tasks are considered:
-1.   Hate Spech Detection. In particular the Twitter dataset of HaSpeeDe is used, the task of Hate Spech Detection organized within Evalita 2018, the 6th evaluation campaign of Natural Language Processing and Speech tools for Italian;
+1.   Hate Spech Detection. In particular the Twitter dataset of HaSpeeDe (http://www.di.unito.it/~tutreeb/haspeede-evalita18/) is used, the task of Hate Spech Detection organized within Evalita 2018, the 6th evaluation campaign of Natural Language Processing and Speech tools for Italian;
 2.   Automatic Misogyny Identification, in particular the identification of misogyny and non-misogyny tweets, using the dataset of one of the tasks proposed by AMI 2018 (https://amievalita2018.wordpress.com), the task on Automatic Misogyny Identification organized in Evalita 2018;
 3.   Identification of misogynistic categories: stereotype, sexual_harassment, discredit, using the dataset of one of the tasks proposed by AMI 2018 (https://amievalita2018.wordpress.com);
 4.   Hate Speech Identification, using the dataset of the sub-task of Hate Speech Identification in DANKMEMEs (https://dankmemes2020.fileli.unipi.it), the task of MEMEs recognition, organized in Evalita 2020;
-5.   Sentiment analysis, in particular recognition of objective and subjective tweets, using the dataset of SENTIPOLC 2016, organized in Evalita 2016;
-6.   Sentiment analysis, in particular recognition of positive, negative and neutral tweets, using the dataset of SENTIPOLC 2016, organized in Evalita 2016.
+5.   Sentiment analysis, in particular recognition of objective and subjective tweets, using the dataset of SENTIPOLC 2016 (http://www.di.unito.it/~tutreeb/sentipolc-evalita16/index.html), organized in Evalita 2016;
+6.   Sentiment analysis, in particular recognition of positive, negative and neutral tweets, using the dataset of SENTIPOLC 2016 (http://www.di.unito.it/~tutreeb/sentipolc-evalita16/index.html), organized in Evalita 2016.
 
 For the misogyny tasks and for the Sentiment Analysis tasks, two sub-tasks of the AMI 2018 and, respectively, of SENTIPOLC 2016 are considered, so for everyone two distinct datasets were generated from a single dataset, in order to constitute the datasets of two different tasks. In fact, in the repository of original dataset, there is only one file (respectively train and test), Misogyny task and one of Sentiment analysis task.
 The repository that contains the original datasets is "mt-ganbert/mttransformer/tsv_files".
