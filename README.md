@@ -2,10 +2,11 @@
 
 This repository contains the code of the MT-GANBERT model: Multi-Task and Generative Adversarial Learning for sustainable Language Processing. The implementation is in Pytorch and it started by using the code available of the model MT-DNN (https://github.com/namisan/mt-dnn), and inside GANBERT (https://github.com/crux82/ganbert) was implemented.
 So in order to use this model you use that code with added parameters that allow you to activate GANBERT rather than the combined version. In this folder there are 4 python books:
-- 0. BERT-based model.ipynb, in which you can launch the training of a simple model based solely on a transformer, in particular Italian Bert-base model, UmBERTo;
-- 1. MT-DNN model.ipynb, in which you can launch the training of a model that applies multi task learning, MT-DNN, again based on UmBERTo;
-- 2. GANBERT model.ipynb, in which you can launch the training of GANBERT;
-- 3. MT-GANBERT model.ipynb, in which you can launch the training of MT-GANBERT;
+
+0. BERT-based model.ipynb, in which you can launch the training of a simple model based solely on a transformer, in particular Italian Bert-base model, UmBERTo;
+1. MT-DNN model.ipynb, in which you can launch the training of a model that applies multi task learning, MT-DNN, again based on UmBERTo;
+2. GANBERT model.ipynb, in which you can launch the training of GANBERT;
+3. MT-GANBERT model.ipynb, in which you can launch the training of MT-GANBERT;
 These notebooks are pretty much the same, only they give you the ability to train each model.
 
 # DATASETS:
