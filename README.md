@@ -1,5 +1,7 @@
 # mt-ganbert
 
+### Author: Claudia Breazzano - Danilo Croce
+
 This repository contains the code of the MT-GANBERT model: Multi-Task and Generative Adversarial Learning for sustainable Language Processing. The implementation is in Pytorch and it started by using the code available of the model MT-DNN (https://github.com/namisan/mt-dnn), and inside GANBERT (https://github.com/crux82/ganbert) was implemented.
 So in order to use this model you use that code with added parameters that allow you to activate GANBERT rather than the combined version. In this folder there are 4 python books:
 
