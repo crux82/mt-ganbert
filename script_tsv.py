@@ -11,10 +11,13 @@ import torch
 os.chdir("original_data")
 
 #destination path to create tsv files, dipends on data cutting
-path_0 = "/Users/claudia/Documents/mt-ganbert/mttransformer/data/0"
-path_100 = "/Users/claudia/Documents/mt-ganbert/mttransformer/data/100"
-path_200 = "/Users/claudia/Documents/mt-ganbert/mttransformer/data/200"
-path_500 = "/Users/claudia/Documents/mt-ganbert/mttransformer/data/500"
+path_0 = "mttransformer/data/0"
+path_100_no_gan = "mttransformer/data/100/no_gan"
+path_200_no_gan = "mttransformer/data/200/no_gan"
+path_500_no_gan = "mttransformer/data/500/no_gan"
+path_100_gan = "mttransformer/data/100/gan"
+path_200_gan = "mttransformer/data/200/gan"
+path_500_gan = "mttransformer/data/500/gan"
 
 #if you use a model with gan the flag "apply_gan" is True, else False
 apply_gan=False
@@ -449,39 +452,33 @@ if balancing==True:
     else:
       train6=unlabeled6
 
-#create directory, dipends on chosen data cutting of tasks, where the task .tsv files are placed
-if number_labeled_examples=0:
-    try:
-        os.mkdir(path_0)
-    except OSError:
-        print ("Creation of the directory %s failed" % path_0)
+os.chdir("..")
+
+#go to directory, dipends on chosen data cutting of tasks, where the task .tsv files are placed
+if number_labeled_examples==0:
+    path=os.path.abspath(path_0)
+    os.chdir(path)
+elif number_labeled_examples==100:
+    if apply_gan==False:
+        path=os.path.abspath(path_100_no_gan)
+        os.chdir(path)
     else:
-        print ("Successfully created the directory %s " % path_0)
-    os.chdir(path_0)
-elif number_labeled_examples=100:
-     try:
-         os.mkdir(path_100)
-     except OSError:
-         print ("Creation of the directory %s failed" % path_100)
-     else:
-         print ("Successfully created the directory %s " % path_100)
-     os.chdir(path_100)
-elif number_labeled_examples=200:
-     try:
-         os.mkdir(path_200)
-     except OSError:
-         print ("Creation of the directory %s failed" % path_200)
-     else:
-         print ("Successfully created the directory %s " % path_200)
-     os.chdir(path_200)
-elif number_labeled_examples=500:
-     try:
-         os.mkdir(path_500)
-     except OSError:
-         print ("Creation of the directory %s failed" % path_500)
-     else:
-         print ("Successfully created the directory %s " % path_500)
-     os.chdir(path_500)
+        path=os.path.abspath(path_100_gan)
+        os.chdir(path)
+elif number_labeled_examples==200:
+    if apply_gan==False:
+        path=os.path.abspath(path_200_no_gan)
+        os.chdir(path)
+    else:
+        path=os.path.abspath(path_200_gan)
+        os.chdir(path)
+elif number_labeled_examples==500:
+    if apply_gan==False:
+        path=os.path.abspath(path_500_no_gan)
+        os.chdir(path)
+    else:
+        path=os.path.abspath(path_500_gan)
+        os.chdir(path)
 
 #The code is using surfix to distinguish what type of set it is ("_train","_dev" and "_test"). So:
 #1.   make sure your train set is named as "TASK_train" (replace TASK with your task name)
