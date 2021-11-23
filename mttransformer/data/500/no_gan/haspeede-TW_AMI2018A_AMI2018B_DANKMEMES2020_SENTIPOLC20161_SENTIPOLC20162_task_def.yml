@@ -1,0 +1,54 @@
+haspeede-TW:
+  data_format: PremiseOnly
+  enable_san: false
+  metric_meta:
+  - F1MAC
+  - ACC
+  loss: CeCriterion
+  n_class: 2
+  task_type: Classification
+AMI2018A:
+  data_format: PremiseOnly
+  enable_san: false
+  metric_meta:
+  - F1MAC
+  - ACC
+  loss: CeCriterion
+  n_class: 2
+  task_type: Classification
+AMI2018B:
+  data_format: PremiseOnly
+  enable_san: false
+  metric_meta:
+  - F1MAC
+  - ACC
+  loss: CeCriterion
+  n_class: 3
+  task_type: Classification
+DANKMEMES2020:
+  data_format: PremiseOnly
+  enable_san: false
+  metric_meta:
+  - F1MAC
+  - ACC
+  loss: CeCriterion
+  n_class: 2
+  task_type: Classification
+SENTIPOLC20161:
+  data_format: PremiseOnly
+  enable_san: false
+  metric_meta:
+  - F1MAC
+  - ACC
+  loss: CeCriterion
+  n_class: 2
+  task_type: Classification
+SENTIPOLC20162:
+  data_format: PremiseOnly
+  enable_san: false
+  metric_meta:
+  - F1MAC
+  - ACC
+  loss: CeCriterion
+  n_class: 3
+  task_type: Classification
