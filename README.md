@@ -2,7 +2,8 @@
 
 ### Author: Claudia Breazzano - Danilo Croce
 
-This repository contains the code of the paper **MT-GANBERT model: Multi-Task and Generative Adversarial Learning for sustainable Language Processing** published in the *5th Workshop on Natural Language for Artificial Intelligence* (NL4AI2021).
+This repository contains the code of the paper **[MT-GANBERT model: Multi-Task and Generative Adversarial Learning for sustainable Language Processing](http://ceur-ws.org/Vol-3015/paper133.pdf
+)** published in the *5th Workshop on Natural Language for Artificial Intelligence* (NL4AI2021).
 
 This code is implemented in Pytorch and it started by using the code available of the model [MT-DNN](https://github.com/namisan/mt-dnn), and inside [GANBERT](https://github.com/crux82/ganbert).
 
@@ -43,9 +44,30 @@ Each python book will load the data (already pre-processed by `script-tsv.py`) a
 If you think that MT-GANBERT is useful for your research, please refers to the following paper. Thank you!
 
 ```
-HERE BIBTEX, NOT YET AVAILABLE
+@inproceedings{DBLP:conf/aiia/BreazzanoC021,
+  author    = {Claudia Breazzano and
+               Danilo Croce and
+               Roberto Basili},
+  editor    = {Elena Cabrio and
+               Danilo Croce and
+               Lucia C. Passaro and
+               Rachele Sprugnoli},
+  title     = {{MT-GAN-BERT:} Multi-Task and Generative Adversarial Learning for
+               Sustainable Language Processing},
+  booktitle = {Proceedings of the Fifth Workshop on Natural Language for Artificial
+               Intelligence {(NL4AI} 2021) co-located with 20th International Conference
+               of the Italian Association for Artificial Intelligence (AI*IA 2021),
+               Online event, November 29, 2021},
+  series    = {{CEUR} Workshop Proceedings},
+  volume    = {3015},
+  publisher = {CEUR-WS.org},
+  year      = {2021},
+  url       = {http://ceur-ws.org/Vol-3015/paper133.pdf},
+  timestamp = {Wed, 24 Nov 2021 15:16:29 +0100},
+  biburl    = {https://dblp.org/rec/conf/aiia/BreazzanoC021.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
 ```
-http://ceur-ws.org/Vol-3015/paper133.pdf
 
 
 ## Datasets and task:
